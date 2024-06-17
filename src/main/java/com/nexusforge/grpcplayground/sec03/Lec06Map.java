@@ -1,5 +1,6 @@
 package com.nexusforge.grpcplayground.sec03;
 
+import com.nexusforge.grpcplayground.models.sec03.BodyStyle;
 import com.nexusforge.grpcplayground.models.sec03.Car;
 import com.nexusforge.grpcplayground.models.sec03.Dealer;
 import org.slf4j.Logger;
@@ -15,12 +16,14 @@ public class Lec06Map {
                 .setMake("Honda")
                 .setModel("civic")
                 .setYear(2000)
+                .setBodyStyle(BodyStyle.SUV)
                 .build();
 
         var car2 = Car.newBuilder()
                 .setMake("Honda")
                 .setModel("accord")
                 .setYear(2030)
+                .setBodyStyle(BodyStyle.COUPE)
                 .build();
 
         var dealer = Dealer.newBuilder()
