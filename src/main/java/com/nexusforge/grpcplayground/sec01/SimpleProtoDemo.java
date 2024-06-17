@@ -1,6 +1,6 @@
 package com.nexusforge.grpcplayground.sec01;
 
-import com.nexusforge.grpcplayground.models.PersonOuterClass;
+import com.nexusforge.grpcplayground.models.sec01.PersonOuterClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

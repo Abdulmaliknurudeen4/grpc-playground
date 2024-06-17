@@ -1,6 +1,7 @@
 syntax = "proto3";
 
-option java_package = "com.nexusforge.grpcplayground.models";
+package sec01;
+option java_package = "com.nexusforge.grpcplayground.models.sec01";
 
 message Person{
   string name = 1;
