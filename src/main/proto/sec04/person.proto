@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package sec04;
+option java_package = "com.nexusforge.grpcplayground.models.sec04";
+option java_multiple_files = true;
+
+import "sec04/common/address.proto";
+import "sec04/common/car.proto";
+
+/*
+Multi line comments
+*/
+
+message Person{
+  string last_name = 1;
+  int32 age = 2;
+  sec04.common.Address address = 3;
+  sec04.common.Car car = 4;
+
+
+}
