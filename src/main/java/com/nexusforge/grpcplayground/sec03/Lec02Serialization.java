@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -34,10 +36,15 @@ public class Lec02Serialization {
     }
 
     public static void serialize(Person person) throws IOException {
-        person.writeTo(Files.newOutputStream(PATH));
+        try (OutputStream outputStream = Files.newOutputStream(PATH)) {
+            person.writeTo(outputStream);
+        }
     }
 
     public static Person deserialize() throws IOException {
-        return Person.parseFrom(Files.newInputStream(PATH));
+
+        try (InputStream inputStream = Files.newInputStream(PATH)) {
+            return Person.parseFrom(inputStream);
+        }
     }
 }
