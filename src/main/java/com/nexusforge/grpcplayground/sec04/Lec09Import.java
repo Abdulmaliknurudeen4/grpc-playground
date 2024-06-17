@@ -22,6 +22,8 @@ public class Lec09Import {
                 .setAddress(address)
                 .build();
 
+//        person.hasAge();
+
         log.info("{}", person);
     }
 }
