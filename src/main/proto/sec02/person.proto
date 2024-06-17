@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package sec02;
 option java_package = "com.nexusforge.grpcplayground.models.sec02";
+option java_multiple_files = true;
 
 message Person{
   string name = 1;
