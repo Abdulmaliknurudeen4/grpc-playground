@@ -19,3 +19,8 @@ message Person{
 
 
 }
+// field size
+// 1 - 15 1 bytes ( Try to use 1 -15 for frequently used fields)
+// 16 - 2047 2bytes
+
+// break down messages into different protos
