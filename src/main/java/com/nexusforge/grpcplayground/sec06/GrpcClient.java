@@ -20,6 +20,10 @@ public class GrpcClient {
                 .usePlaintext()
                 .build();
         var stub = BankServiceGrpc.newStub(channel);
+
+        // newStub - Asynch is the only one that supports 4 communication
+        // patterns
+
         stub.getAccountBalance(BalanceCheckRequest
                 .newBuilder()
                 .setAccountNumber(2)
