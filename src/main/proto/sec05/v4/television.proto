@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package sec05.v3;
-option java_package = "com.nexusforge.grpcplayground.models.sec05.v3";
+package sec05.v4;
+option java_package = "com.nexusforge.grpcplayground.models.sec05.v4";
 option java_multiple_files = true;
 
 message Television{
