@@ -1,5 +1,6 @@
 package com.nexusforge.grpcplayground.sec06;
 
+import com.google.common.util.concurrent.Uninterruptibles;
 import com.nexusforge.grpcplayground.common.ResponseObserver;
 import com.nexusforge.grpcplayground.models.sec06.AccountBalance;
 import com.nexusforge.grpcplayground.models.sec06.DepositRequest;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 public class Lec04ClientStreamingTest extends AbstractTest {
@@ -24,10 +26,15 @@ public class Lec04ClientStreamingTest extends AbstractTest {
         requestObserver.onNext(DepositRequest.newBuilder()
                 .setAccountNumber(5)
                 .build());
+
+        // client cancelling out
+        /*Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
+        requestObserver.onError(new RuntimeException());*/
         IntStream.rangeClosed(1, 10)
                 .mapToObj(i -> Money.newBuilder().setAmount(10).build())
                 .map(c -> DepositRequest.newBuilder().setMoney(c).build())
                 .forEach(requestObserver::onNext);
+
 
         requestObserver.onCompleted();
 
