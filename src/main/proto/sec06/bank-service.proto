@@ -19,12 +19,20 @@ message AllAccountResponse{
   repeated AccountBalance accounts = 1;
 }
 message WithdrawRequest{
-  int32 account_number=1;
+  int32 account_number = 1;
   int32 amount = 2;
 }
 
 message Money{
   int32 amount = 1;
+}
+message DepositRequest{
+  // setting the context of the request
+  oneof request {
+    int32 account_number = 1;
+    Money money = 2;
+  }
+  // we send acount info first then subseqently money value
 }
 
 service BankService{
@@ -34,4 +42,7 @@ service BankService{
 
   //server streaming
   rpc Withdraw(WithdrawRequest) returns (stream Money);
+
+  //client streaming
+  rpc Deposit(stream DepositRequest) returns (AccountBalance);
 }
