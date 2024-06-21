@@ -1,10 +1,7 @@
 package com.nexusforge.grpcplayground.sec06;
 
 import com.google.protobuf.Empty;
-import com.nexusforge.grpcplayground.models.sec06.AccountBalance;
-import com.nexusforge.grpcplayground.models.sec06.AllAccountResponse;
-import com.nexusforge.grpcplayground.models.sec06.BalanceCheckRequest;
-import com.nexusforge.grpcplayground.models.sec06.BankServiceGrpc;
+import com.nexusforge.grpcplayground.models.sec06.*;
 import com.nexusforge.grpcplayground.sec06.repository.AccountRepository;
 import io.grpc.stub.StreamObserver;
 
@@ -35,5 +32,10 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
                 .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+    }
+
+    @Override
+    public void withdraw(WithdrawRequest request, StreamObserver<Money> responseObserver) {
+
     }
 }
