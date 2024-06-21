@@ -1,5 +1,8 @@
 package com.nexusforge.grpcplayground.sec06;
 
+import com.google.protobuf.Empty;
+import com.nexusforge.grpcplayground.common.ResponseObserver;
+import com.nexusforge.grpcplayground.models.sec06.AllAccountResponse;
 import com.nexusforge.grpcplayground.models.sec06.Money;
 import com.nexusforge.grpcplayground.models.sec06.WithdrawRequest;
 import org.junit.jupiter.api.Assertions;
@@ -27,5 +30,21 @@ public class Lec03ServerStreamingClientTest extends AbstractTest {
         }
 
         Assertions.assertEquals(2, count);
+    }
+
+    @Test
+    public void asyncClientWithdrawTest(){
+        var request = WithdrawRequest.newBuilder()
+                .setAccountNumber(9)
+                .setAmount(50)
+                .build();
+
+        var observer = ResponseObserver.<Money>create();
+        this.stub.withdraw(request, observer);
+        observer.await();
+        Assertions.assertEquals(5, observer.getItems().size());
+        Assertions.assertEquals(10, observer.getItems().getFirst().getAmount());
+        Assertions.assertNull(observer.getThrowable());
+
     }
 }
