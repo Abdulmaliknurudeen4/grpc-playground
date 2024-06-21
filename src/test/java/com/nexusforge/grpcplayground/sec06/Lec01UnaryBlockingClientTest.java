@@ -1,5 +1,7 @@
 package com.nexusforge.grpcplayground.sec06;
 
+import com.google.protobuf.Empty;
+import com.nexusforge.grpcplayground.models.sec06.AllAccountResponse;
 import com.nexusforge.grpcplayground.models.sec06.BalanceCheckRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,5 +19,14 @@ public class Lec01UnaryBlockingClientTest extends AbstractTest {
         var balance = this.blockingStub.getAccountBalance(request);
         log.info("unary Balance received: {}", balance);
         Assertions.assertEquals(100, balance.getBalance());
+    }
+
+    @Test
+    public void getAllAccounts(){
+        var request = AllAccountResponse.newBuilder()
+                .build();
+        var accounts = this.blockingStub.getAllAccounts(Empty.newBuilder().build());
+        log.info("unary All Accounts received: {} ", accounts != null);
+        Assertions.assertEquals(10, accounts.getAccountsList().size());
     }
 }
