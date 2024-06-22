@@ -1,6 +1,5 @@
 package com.nexusforge.grpcplayground.sec06;
 
-import com.google.common.util.concurrent.Uninterruptibles;
 import com.nexusforge.grpcplayground.common.ResponseObserver;
 import com.nexusforge.grpcplayground.models.sec06.AccountBalance;
 import com.nexusforge.grpcplayground.models.sec06.DepositRequest;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 public class Lec04ClientStreamingTest extends AbstractTest {
@@ -20,7 +18,7 @@ public class Lec04ClientStreamingTest extends AbstractTest {
     public void depositTest() {
         //this.blockingStub -> blocking stub doesn't support client stream
         var responseObserver = ResponseObserver.<AccountBalance>create();
-        var requestObserver = this.stub.deposit(responseObserver);
+        var requestObserver = this.bankStub.deposit(responseObserver);
 
         //initial message - accountNumber
         requestObserver.onNext(DepositRequest.newBuilder()

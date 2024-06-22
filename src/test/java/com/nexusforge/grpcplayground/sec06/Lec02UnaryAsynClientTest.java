@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CountDownLatch;
-
 public class Lec02UnaryAsynClientTest extends AbstractTest {
     public static final Logger log = LoggerFactory.getLogger(Lec02UnaryAsynClientTest.class);
 
@@ -21,7 +19,7 @@ public class Lec02UnaryAsynClientTest extends AbstractTest {
                 .setAccountNumber(1)
                 .build();
         var observer = ResponseObserver.<AccountBalance>create();
-        this.stub.getAccountBalance(request, observer);
+        this.bankStub.getAccountBalance(request, observer);
         observer.await();
         Assertions.assertEquals(1, observer.getItems().size());
         Assertions.assertEquals(100, observer.getItems().getFirst().getBalance());
@@ -34,7 +32,7 @@ public class Lec02UnaryAsynClientTest extends AbstractTest {
         var request = AllAccountResponse.newBuilder()
                 .build();
         var observer = ResponseObserver.<AllAccountResponse>create();
-        this.stub.getAllAccounts(Empty.newBuilder().build(), observer);
+        this.bankStub.getAllAccounts(Empty.newBuilder().build(), observer);
         observer.await();
         Assertions.assertEquals(1, observer.getItems().size());
         Assertions.assertEquals(10, observer.getItems().getFirst().getAccountsCount());
