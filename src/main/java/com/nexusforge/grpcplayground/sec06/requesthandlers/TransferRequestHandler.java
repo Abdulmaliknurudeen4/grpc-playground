@@ -42,7 +42,7 @@ public class TransferRequestHandler implements StreamObserver<TransferRequest> {
 
     private TransferStatus tranfer(TransferRequest request) {
         var amount = request.getAmount();
-        var fromAccount = request.getAmount();
+        var fromAccount = request.getFromAccount();
         var toAccount = request.getToAccount();
         var status = TransferStatus.REJECTED;
 
