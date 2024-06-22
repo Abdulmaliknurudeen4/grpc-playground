@@ -23,7 +23,7 @@ public class ResponseHandler implements StreamObserver<Output> {
         this.process(output);
         if (this.size == 0) {
             log.info("========================");
-            this.request(3);
+            this.request(ThreadLocalRandom.current().nextInt(1, 6));
         }
     }
 
@@ -59,7 +59,7 @@ public class ResponseHandler implements StreamObserver<Output> {
         );
     }
 
-    public void await(){
+    public void await() {
         try {
             this.latch.await();
         } catch (InterruptedException e) {
@@ -67,7 +67,7 @@ public class ResponseHandler implements StreamObserver<Output> {
         }
     }
 
-    public void start(){
+    public void start() {
         this.request(3);
     }
 }
