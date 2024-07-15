@@ -56,24 +56,34 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
         // do validations, amounts must be in 10 denominations (20 30 40)
         //account must be valid.
 
-        var accountNumber = request.getAccountNumber();
-        var requestAmount = request.getAmount();
+        try {
+            var accountNumber = request.getAccountNumber();
+            var requestAmount = request.getAmount();
 
-        var accountBalance = AccountRepository.getBalance(accountNumber);
-        if (requestAmount > accountBalance) {
+            var accountBalance = AccountRepository.getBalance(accountNumber);
+            if (requestAmount > accountBalance) {
+                responseObserver.onCompleted();
+                return;
+            }
+
+            for (int i = 0; i < requestAmount / 10; i++) {
+                var money = Money.newBuilder().setAmount(10).build();
+                if (i == 3) {
+                    throw new RuntimeException();
+                }
+                responseObserver.onNext(money);
+                log.info("money sent {} ", money);
+                AccountRepository.deductAmount(accountNumber, 10);
+                Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
+
+            }
             responseObserver.onCompleted();
-            return;
+        }catch (Exception e){
+            // incase of server errrors
+            responseObserver.onError(
+                    Status.INTERNAL.withDescription("Oops").asRuntimeException()
+            );
         }
-
-        for (int i = 0; i < requestAmount / 10; i++) {
-            var money = Money.newBuilder().setAmount(10).build();
-            responseObserver.onNext(money);
-            log.info("money sent {} ", money);
-            AccountRepository.deductAmount(accountNumber, 10);
-            Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
-
-        }
-        responseObserver.onCompleted();
     }
 
 }
