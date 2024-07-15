@@ -1,10 +1,10 @@
 package com.nexusforge.grpcplayground.common;
 
-import com.nexusforge.grpcplayground.sec08.GameService;
+import com.nexusforge.grpcplayground.sec09.BankService;
 
 public class Demo {
     public static void main(String[] args) {
-        GrpcServer.create(new GameService())
+        GrpcServer.create(new BankService())
                 .start()
                 .await();
     }/* public static void main(String[] args) {

@@ -3,6 +3,8 @@ package com.nexusforge.grpcplayground.sec09;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.nexusforge.grpcplayground.models.sec09.*;
 import com.nexusforge.grpcplayground.sec09.repository.AccountRepository;
+import com.nexusforge.grpcplayground.sec09.validator.RequestValidator;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,16 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
 
     @Override
     public void getAccountBalance(BalanceCheckRequest request, StreamObserver<AccountBalance> responseObserver) {
+        RequestValidator.validateAccount(request.getAccountNumber())
+                .map(Status::asRuntimeException)
+                .ifPresentOrElse(
+                        responseObserver::onError,
+                        () -> sendAccountBalance(request, responseObserver)
+                );
+    }
+
+    private void sendAccountBalance(BalanceCheckRequest request, StreamObserver<AccountBalance> responseObserver) {
+
         var accountNumber = request.getAccountNumber();
         var balance = AccountRepository.getBalance(accountNumber);
         var accountBalance = AccountBalance.newBuilder().
@@ -27,6 +39,20 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
 
     @Override
     public void withdraw(WithdrawRequest request, StreamObserver<Money> responseObserver) {
+        RequestValidator.validateAccount(request.getAccountNumber())
+                //chaninig validations
+                .or(() -> RequestValidator.isAmountDivisbleBy10(request.getAmount()))
+                .or(() -> RequestValidator.hasSuffiecientBalance(request.getAmount(), AccountRepository.getBalance(request.getAccountNumber())))
+                .map(Status::asRuntimeException)
+                .ifPresentOrElse(
+                        responseObserver::onError,
+                        () -> {
+                            sendMoney(request, responseObserver);
+                        }
+                );
+    }
+
+    private void sendMoney(WithdrawRequest request, StreamObserver<Money> responseObserver) {
         // do validations, amounts must be in 10 denominations (20 30 40)
         //account must be valid.
 
