@@ -55,7 +55,11 @@ public class RequestValidator {
                 .setDescription(description)
                 .build();
         metadata.put(ERROR_MESSAGE_KEY, errorMessage);
+
+        var keyString = Metadata.Key.of("desc", Metadata.ASCII_STRING_MARSHALLER);
+        metadata.put(keyString, code.toString());
         return metadata;
+
 
     }
 
