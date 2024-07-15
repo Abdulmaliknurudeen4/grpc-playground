@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package sec10;
+
+option java_multiple_files = true;
+option java_package = "com.nexusforge.grpcplayground.models.sec10";
+
+message BalanceCheckRequest{
+  int32 account_number = 1;
+}
+
+message AccountBalance{
+  int32 account_number = 1;
+  int32 balance = 2;
+}
+message WithdrawRequest{
+  int32 account_number = 1;
+  int32 amount = 2;
+}
+
+message Money{
+  int32 amount = 1;
+}
+
+enum ValidationCode{
+  // application specific code
+  INVALID_ACCOUNT=0;
+  INVALID_AMOUNT=1;
+  INSUFFICIENT_BALANCE=2;
+}
+message ErrorMessage{
+  ValidationCode validation_code = 1;
+  string description=2;
+}
+
+message TransferRequest{
+  int32 from_account = 1;
+  int32 to_account =2;
+  int32  amount = 3;
+}
+enum TransferStatus{
+  REJECTED = 0;
+  COMPLETED = 1;
+}
+message TransferResponse{
+  TransferStatus status = 1;
+  AccountBalance from_account = 2;
+  AccountBalance to_account = 3;
+}
+
+service BankService{
+  //unary //account number between 1 and 10
+  rpc GetAccountBalance(BalanceCheckRequest) returns (AccountBalance);
+
+  //server streaming //same validation
+  // 10 multiples not something like 17. 10 dollar denominations
+  // enough balance
+  rpc Withdraw(WithdrawRequest) returns (stream Money);
+
+}

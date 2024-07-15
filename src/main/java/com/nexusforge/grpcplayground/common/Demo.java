@@ -1,6 +1,6 @@
 package com.nexusforge.grpcplayground.common;
 
-import com.nexusforge.grpcplayground.sec09.BankService;
+import com.nexusforge.grpcplayground.sec10.BankService;
 
 public class Demo {
     public static void main(String[] args) {
