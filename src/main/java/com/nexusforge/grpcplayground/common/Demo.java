@@ -1,10 +1,10 @@
 package com.nexusforge.grpcplayground.common;
 
-import com.nexusforge.grpcplayground.sec10.BankService;
+import com.nexusforge.grpcplayground.sec11.DelayedBankService;
 
 public class Demo {
     public static void main(String[] args) {
-        GrpcServer.create(new BankService())
+        GrpcServer.create(new DelayedBankService())
                 .start()
                 .await();
     }/* public static void main(String[] args) {
