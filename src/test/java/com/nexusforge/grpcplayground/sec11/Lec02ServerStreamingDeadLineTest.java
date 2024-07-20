@@ -41,7 +41,7 @@ public class Lec02ServerStreamingDeadLineTest extends AbstractTest{
                 .build();
 
        var iterator = this.bankBlockingStub
-                .withDeadline(Deadline.after(2, TimeUnit.SECONDS))
+                .withDeadline(Deadline.after(6, TimeUnit.SECONDS))
                 .withdraw(request);
 
        while(iterator.hasNext()){

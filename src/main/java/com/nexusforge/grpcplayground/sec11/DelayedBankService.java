@@ -3,6 +3,7 @@ package com.nexusforge.grpcplayground.sec11;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.nexusforge.grpcplayground.models.sec11.*;
 import com.nexusforge.grpcplayground.sec11.repository.AccountRepository;
+import io.grpc.Context;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
@@ -42,7 +43,9 @@ public class DelayedBankService extends BankServiceGrpc.BankServiceImplBase {
             return;
         }
 
-        for (int i = 0; i < requestAmount / 10; i++) {
+
+
+        for (int i = 0; i < (requestAmount / 10) && !Context.current().isCancelled(); i++) {
             var money = Money.newBuilder().setAmount(10).build();
             responseObserver.onNext(money);
             log.info("money sent {} ", money);
@@ -50,6 +53,7 @@ public class DelayedBankService extends BankServiceGrpc.BankServiceImplBase {
             Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
 
         }
+        log.info("streaming completed.");
         responseObserver.onCompleted();
     }
 
