@@ -1,15 +1,15 @@
 package com.nexusforge.grpcplayground.common;
 
-import com.nexusforge.grpcplayground.sec06.BankService;
+import com.nexusforge.grpcplayground.sec12.BankService;
 
 public class Demo {
-    /*public static void main(String[] args) {
-        GrpcServer.create(new DelayedBankService())
+    public static void main(String[] args) {
+        GrpcServer.create(new BankService())
                 .start()
                 .await();
-    }*/
+    }
 
-    private static class BankInstance1{
+    /*private static class BankInstance1{
         public static void main(String[] args) {
             GrpcServer.create(6565, new BankService())
                     .start().await();
@@ -21,5 +21,5 @@ public class Demo {
             GrpcServer.create(7575, new BankService())
                     .start().await();
         }
-    }
+    }*/
 }
