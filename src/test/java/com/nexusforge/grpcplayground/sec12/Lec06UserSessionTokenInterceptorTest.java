@@ -28,7 +28,7 @@ public class Lec06UserSessionTokenInterceptorTest extends AbstractInterceptorTes
         return GrpcServer
                 .create(6565, serverBuilder -> {
                     serverBuilder.addService(new BankService())
-                            .intercept(new ApiKeyValidationInterceptor());
+                            .intercept(new UserSessionTokenInter());
                 });
     }
 
