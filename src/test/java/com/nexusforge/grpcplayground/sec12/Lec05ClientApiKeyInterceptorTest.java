@@ -1,6 +1,9 @@
 package com.nexusforge.grpcplayground.sec12;
 
+import com.nexusforge.grpcplayground.common.GrpcServer;
 import com.nexusforge.grpcplayground.models.sec12.BalanceCheckRequest;
+import com.nexusforge.grpcplayground.sec12.Interceptors.ApiKeyValidationInterceptor;
+import com.nexusforge.grpcplayground.sec12.Interceptors.GzipResponseInterceptor;
 import io.grpc.ClientInterceptor;
 import io.grpc.Metadata;
 import io.grpc.stub.MetadataUtils;
@@ -20,9 +23,19 @@ private static final Logger log = LoggerFactory.getLogger(Lec05ClientApiKeyInter
         );
     }
 
+    @Override
+    protected GrpcServer createServer() {
+        return GrpcServer
+                .create(6565, serverBuilder -> {
+                    serverBuilder.addService(new BankService())
+                            .intercept(new ApiKeyValidationInterceptor());
+                });
+    }
+
+
     private Metadata getApiKey() {
         var metadata = new Metadata();
-        metadata.put(API_KEY, "bank-client-service");
+        metadata.put(Constants.API_KEY, "bank-client-service");
         return metadata;
     }
 
