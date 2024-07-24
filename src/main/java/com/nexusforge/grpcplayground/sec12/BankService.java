@@ -26,8 +26,8 @@ public class BankService extends BankServiceGrpc.BankServiceImplBase {
         Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
 
         //Enabling on Server side
-        ((ServerCallStreamObserver<AccountBalance>) responseObserver)
-                .setCompression("gzip");
+        /*((ServerCallStreamObserver<AccountBalance>) responseObserver)
+                .setCompression("gzip");*/
 
         responseObserver.onNext(accountBalance);
         responseObserver.onCompleted();

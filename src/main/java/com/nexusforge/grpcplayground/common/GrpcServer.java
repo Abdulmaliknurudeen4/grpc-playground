@@ -1,5 +1,6 @@
 package com.nexusforge.grpcplayground.common;
 
+import com.nexusforge.grpcplayground.sec12.Interceptors.GzipResponseInterceptor;
 import io.grpc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,9 @@ public class GrpcServer {
     }
 
     public static GrpcServer create(int port, BindableService... services) {
-        var builder = ServerBuilder.forPort(port);
+        var builder = ServerBuilder
+                .forPort(port)
+                .intercept(new GzipResponseInterceptor());
         Arrays.asList(services).forEach(builder::addService);
         return new GrpcServer(builder.build());
     }
