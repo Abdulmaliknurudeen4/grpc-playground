@@ -5,7 +5,6 @@ import com.nexusforge.grpcplayground.models.sec12.*;
 import com.nexusforge.grpcplayground.sec12.repository.AccountRepository;
 import io.grpc.Context;
 import io.grpc.Status;
-import io.grpc.stub.ServerCallStreamObserver;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
