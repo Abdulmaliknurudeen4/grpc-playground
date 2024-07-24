@@ -2,11 +2,13 @@ package com.nexusforge.grpcplayground.sec12;
 
 import com.nexusforge.grpcplayground.models.sec12.BalanceCheckRequest;
 import com.nexusforge.grpcplayground.sec12.interceptors.CompressionInterceptor;
+import com.nexusforge.grpcplayground.sec12.interceptors.DeadLineInterceptor;
 import io.grpc.ClientInterceptor;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.List;
 
 public class Lec04CompressionTestInterceptor extends AbstractInterceptorTest {
@@ -15,7 +17,8 @@ public class Lec04CompressionTestInterceptor extends AbstractInterceptorTest {
     @Override
     protected List<ClientInterceptor> getClientInterceptor() {
         return List.of(
-                new CompressionInterceptor("gzip")
+                new CompressionInterceptor("gzip"),
+                new DeadLineInterceptor(Duration.ofSeconds(18))
         );
     }
 
