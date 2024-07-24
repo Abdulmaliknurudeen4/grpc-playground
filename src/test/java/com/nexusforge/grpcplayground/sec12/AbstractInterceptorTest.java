@@ -2,6 +2,7 @@ package com.nexusforge.grpcplayground.sec12;
 
 import com.nexusforge.grpcplayground.common.GrpcServer;
 import com.nexusforge.grpcplayground.models.sec12.BankServiceGrpc;
+import com.nexusforge.grpcplayground.sec12.Interceptors.GzipResponseInterceptor;
 import io.grpc.ClientInterceptor;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -13,17 +14,24 @@ import java.util.List;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AbstractInterceptorTest {
-    private final GrpcServer grpcServer = GrpcServer
-            .create(new BankService());
     protected BankServiceGrpc.BankServiceBlockingStub bankBlockingStub;
     protected BankServiceGrpc.BankServiceStub bankStub;
     protected ManagedChannel channel;
+    private GrpcServer grpcServer;
 
     protected abstract List<ClientInterceptor> getClientInterceptor();
 
+    protected GrpcServer createServer() {
+        return GrpcServer
+                .create(6565, serverBuilder -> {
+                    serverBuilder.addService(new BankService())
+                            .intercept(new GzipResponseInterceptor());
+                });
+    }
 
     @BeforeAll
     public void setup() {
+        this.grpcServer = createServer();
         this.grpcServer.start();
         this.channel = ManagedChannelBuilder
                 .forAddress("localhost", 6565)
