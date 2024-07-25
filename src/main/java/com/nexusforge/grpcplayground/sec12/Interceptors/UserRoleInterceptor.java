@@ -57,7 +57,7 @@ public class UserRoleInterceptor implements ServerInterceptor {
                                                           Metadata metadata, Status status) {
         serverCall.close(status, metadata);
         // return empty listener incase of error
-        return new ServerCall.Listener<ReqT>() {
+        return new ServerCall.Listener<>() {
         };
     }
 }

@@ -14,7 +14,7 @@ public class UserRoleBankService extends BankServiceGrpc.BankServiceImplBase {
     public void getAccountBalance(BalanceCheckRequest request, StreamObserver<AccountBalance> responseObserver) {
         var accountNumber = request.getAccountNumber();
         var balance = AccountRepository.getBalance(accountNumber);
-        var currentCtx = Context.current();
+       // var currentCtx = Context.current();
         // the constants java file gets the user-key from the context. so
         log.info("{}", Constants.USER_ROLE_KEY.get());
         // this would always return true because it's always true

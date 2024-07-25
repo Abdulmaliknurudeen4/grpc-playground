@@ -1,12 +1,8 @@
 package com.nexusforge.grpcplayground.sec12;
 
 import com.nexusforge.grpcplayground.common.GrpcServer;
-import com.nexusforge.grpcplayground.common.ResponseObserver;
 import com.nexusforge.grpcplayground.models.sec12.BalanceCheckRequest;
-import com.nexusforge.grpcplayground.models.sec12.Money;
-import com.nexusforge.grpcplayground.models.sec12.WithdrawRequest;
 import com.nexusforge.grpcplayground.sec12.Interceptors.UserRoleInterceptor;
-import com.nexusforge.grpcplayground.sec12.Interceptors.UserSessionTokenInterceptor;
 import io.grpc.CallCredentials;
 import io.grpc.ClientInterceptor;
 import io.grpc.Metadata;
@@ -17,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class Lec07UserRoleContextTest extends AbstractInterceptorTest{
     private static final Logger log = LoggerFactory.getLogger(Lec07UserRoleContextTest.class);

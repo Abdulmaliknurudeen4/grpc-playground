@@ -29,18 +29,16 @@ public class Lec06UserSessionTokenInterceptorTest extends AbstractInterceptorTes
     @Override
     protected GrpcServer createServer() {
         return GrpcServer
-                .create(6565, serverBuilder -> {
-                    serverBuilder.addService(new BankService())
-                            .intercept(new UserSessionTokenInterceptor());
-                });
+                .create(6565, serverBuilder -> serverBuilder.addService(new BankService())
+                        .intercept(new UserSessionTokenInterceptor()));
     }
 
 
-    private Metadata getApiKey() {
+  /*  private Metadata getApiKey() {
         var metadata = new Metadata();
         metadata.put(Constants.API_KEY, "bank-client-secret");
         return metadata;
-    }
+    }*/
 
     @Test
     public void unaryUserCredentialsDemo() {
