@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package sec13;
+
+import "google/protobuf/empty.proto";
+
+option java_package = "com.nexusforge.grpcplayground.models.sec13";
+option java_multiple_files = true;
+
+message BalanceCheckRequest{
+  int32 account_number = 1;
+}
+
+message AccountBalance{
+  int32 account_number = 1;
+  int32 balance = 2;
+}
+message AllAccountResponse{
+  repeated AccountBalance accounts = 1;
+}
+message WithdrawRequest{
+  int32 account_number = 1;
+  int32 amount = 2;
+}
+
+message Money{
+  int32 amount = 1;
+}
+message DepositRequest{
+  // setting the context of the request
+  oneof request {
+    int32 account_number = 1;
+    Money money = 2;
+  }
+  // we send acount info first then subseqently money value
+}
+
+message TransferRequest{
+  int32 from_account = 1;
+  int32 to_account =2;
+  int32  amount = 3;
+}
+enum TransferStatus{
+  REJECTED = 0;
+  COMPLETED = 1;
+}
+message TransferResponse{
+  TransferStatus status = 1;
+  AccountBalance from_account = 2;
+  AccountBalance to_account = 3;
+}
+
+service BankService{
+  //unary
+  rpc GetAccountBalance(BalanceCheckRequest) returns (AccountBalance);
+
+  //server streaming
+  rpc Withdraw(WithdrawRequest) returns (stream Money);
+
+}
