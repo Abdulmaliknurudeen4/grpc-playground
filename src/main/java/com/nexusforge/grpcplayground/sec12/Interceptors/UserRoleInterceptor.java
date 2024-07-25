@@ -47,6 +47,8 @@ public class UserRoleInterceptor implements ServerInterceptor {
         if (Objects.nonNull(token) && (PRIME_SET.contains(token) || STANDARD_SET.contains(token))) {
             var role = PRIME_SET.contains(token) ? UserRole.PRIME : UserRole.STANDARD;
             return Context.current().withValue(Constants.USER_ROLE_KEY, role);
+            //we've allowed the values into the Service layer
+            // but we still don't know what the values is, in the service layer
         }
         return null;
     }
