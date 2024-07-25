@@ -1,8 +1,11 @@
 package com.nexusforge.grpcplayground.sec13;
 
+import com.nexusforge.grpcplayground.common.GrpcServer;
 import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContextBuilder;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -19,14 +22,31 @@ public abstract class AbstractTest {
     private static final char[] PASSWORD = "changeit".toCharArray();
 
 
-    protected SslContext serverSslContext(){
-        return handleException(()->GrpcSslContexts.configure(SslContextBuilder
+    private final GrpcServer grpcServer = GrpcServer.create(6565, b -> {
+        b.addService(new BankService())
+                .sslContext(serverSslContext());
+    });
+
+    @BeforeAll
+    public void start() {
+        this.grpcServer.start();
+    }
+
+    @AfterAll
+    public void stop() {
+        this.grpcServer.stop();
+    }
+
+
+    protected SslContext serverSslContext() {
+        return handleException(() -> GrpcSslContexts.configure(SslContextBuilder
                 .forServer(getKeyManagerFactory())).build());
     }
-    protected SslContext clientSslContext(){
-        return handleException(()->GrpcSslContexts
+
+    protected SslContext clientSslContext() {
+        return handleException(() -> GrpcSslContexts
                 .configure(SslContextBuilder
-                .forClient().trustManager(getTrustManagerFactory())).build());
+                        .forClient().trustManager(getTrustManagerFactory())).build());
     }
 
     protected KeyManagerFactory getKeyManagerFactory() {

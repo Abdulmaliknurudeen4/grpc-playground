@@ -2,6 +2,7 @@ package com.nexusforge.grpcplayground.common;
 
 import com.nexusforge.grpcplayground.sec12.Interceptors.GzipResponseInterceptor;
 import io.grpc.*;
+import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,9 +27,9 @@ public class GrpcServer {
         });
     }
 
-    public static GrpcServer create(int port, Consumer<ServerBuilder<?>> consumer) {
+    public static GrpcServer create(int port, Consumer<NettyServerBuilder> consumer) {
         var builder = ServerBuilder.forPort(port);
-        consumer.accept(builder);
+        consumer.accept((NettyServerBuilder)builder);
         return new GrpcServer(builder.build());
     }
 
